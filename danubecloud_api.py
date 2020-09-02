@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 # logging to file
 file_logger = logging.getLogger(__name__)
-file_handler = logging.FileHandler('request.log')
+file_handler = logging.FileHandler('logs/request.log')
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(logging.Formatter('%(msg)s'))
 file_logger.addHandler(file_handler)
