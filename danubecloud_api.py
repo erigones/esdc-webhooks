@@ -1,5 +1,10 @@
 #!/usr/bin/env python
+
 import os
+import sys
+import logging
+from bottle import route, run, response, json_dumps
+from github3 import login
 
 SERVER = os.environ.get('BOTTLE_SERVER', 'wsgiref')
 GITHUB_USERNAME = os.environ.get('GITHUB_USERNAME', None)
@@ -10,12 +15,8 @@ if not GITHUB_TOKEN or not GITHUB_USERNAME:
 
 if SERVER == 'gevent':
     from gevent import monkey
-    monkey.patch_all()
 
-import sys
-import logging
-from bottle import route, run, response, json_dumps
-from github3 import login
+    monkey.patch_all()
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(name)s: %(message)s')
@@ -37,6 +38,7 @@ def _get_tags():
 
 @route('/api/releases', method=('GET',))
 def releases():
+    response.add_header("Access-Control-Allow-Origin", "*")
     return _json_response(_get_tags())
 
 
